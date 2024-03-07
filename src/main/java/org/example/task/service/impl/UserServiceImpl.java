@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Primary
 @Service
 @Transactional
@@ -50,8 +52,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         userRepository.deleteById(id);
+        return userRepository.findById(id).isEmpty();
+    }
+
+    @Override
+    public List<UserResponseDto> getAllUsers() {
+        return userRepository
+                .findAll()
+                .stream()
+                .map(this::mapModelToDto)
+                .toList();
     }
 
     private UserResponseDto mapModelToDto(User user) {

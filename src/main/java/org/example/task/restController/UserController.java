@@ -23,4 +23,6 @@ public class UserController {
         var userDto = userService.getUserById(id);
         return ResponseEntity.ok(userDto);
     }
+
+    //TODO create CRUD operations
 }
