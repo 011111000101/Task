@@ -1,10 +1,11 @@
 package org.example.task.service;
 
-import org.example.task.dto.UserDto;
+import org.example.task.dto.UserRequestDto;
+import org.example.task.dto.UserResponseDto;
 
 public interface UserService {
-    UserDto createUser(UserDto userDto);
-    UserDto getUserById(Long id);
-    UserDto updateUser(UserDto userDto);
+    UserResponseDto createUser(UserRequestDto dto);
+    UserResponseDto getUserById(Long id);
+    UserResponseDto updateUser(UserRequestDto dto);
     void delete(Long id);
 }
