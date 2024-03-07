@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isUserExist(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.existsUserByUsername(username);
     }
 
     private UserResponseDto mapModelToDto(User user) {
