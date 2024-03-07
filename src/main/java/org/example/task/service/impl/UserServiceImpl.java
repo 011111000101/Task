@@ -1,16 +1,16 @@
 package org.example.task.service.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.example.task.dto.UserRequestDto;
 import org.example.task.dto.UserResponseDto;
+import org.example.task.exception.UserAlreadyExistsException;
+import org.example.task.exception.UserNotFoundException;
+import org.example.task.exception.UserUpdateException;
 import org.example.task.model.User;
 import org.example.task.repository.UserRepository;
 import org.example.task.service.UserService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Primary
 @Service
@@ -27,6 +27,9 @@ public class UserServiceImpl implements UserService {
     public UserResponseDto createUser(UserRequestDto dto) {
         var user = new User();
         mapDtoToModel(dto, user);
+        if (isUserExist(user.getUsername())) {
+            throw new UserAlreadyExistsException(user.getUsername());
+        }
         var savedUser = userRepository.save(user);
         return mapModelToDto(savedUser);
     }
@@ -34,45 +37,43 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto getUserById(Long id) {
         var user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException(id);
+        }
         return user.map(this::mapModelToDto).orElseGet(UserResponseDto::new);
     }
 
     @Override
-    public UserResponseDto updateUser(UserRequestDto dto) {
-        var user = userRepository.findById(dto.getId())
-                .orElseThrow(() -> new EntityNotFoundException());
+    public UserResponseDto updateUser(UserRequestDto dtoUpdate) {
+        var user = userRepository
+                .findById(dtoUpdate.getId())
+                .orElseThrow(() -> new UserNotFoundException(dtoUpdate.getId()));
 
-        if (!dto.getUsername().isBlank()) {
-            user.setUsername(dto.getUsername());
+        if (!dtoUpdate.getUsername().isBlank()) {
+            user.setUsername(dtoUpdate.getUsername());
             var userUpdated = userRepository.save(user);
             return mapModelToDto(userUpdated);
         } else {
-            throw new EntityNotFoundException("Username for update is empty for user with ID: " + dto.getId());
+            throw new UserUpdateException("User name is missing.");
         }
     }
 
     @Override
-    public boolean delete(Long id) {
-        userRepository.deleteById(id);
-        return userRepository.findById(id).isEmpty();
+    public void delete(Long id) {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+        } else {
+            throw new UserNotFoundException(id);
+        }
     }
 
     @Override
-    public List<UserResponseDto> getAllUsers() {
-        return userRepository
-                .findAll()
-                .stream()
-                .map(this::mapModelToDto)
-                .toList();
+    public boolean isUserExist(String username) {
+        return userRepository.findByUsername(username);
     }
 
     private UserResponseDto mapModelToDto(User user) {
         return new UserResponseDto(user.getId(), user.getUsername());
-    }
-
-    private void mapDtoToModel(UserResponseDto dto, User user) {
-        user.setUsername(dto.getUsername());
-        user.setId(dto.getId());
     }
 
     private void mapDtoToModel(UserRequestDto dto, User user) {

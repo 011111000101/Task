@@ -3,13 +3,10 @@ package org.example.task.restController;
 import org.example.task.dto.ResponseDto;
 import org.example.task.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
 public class UserController {
 
     private final UserService userService;
@@ -18,11 +15,15 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<? extends ResponseDto> getUserById(@PathVariable Long id) {
+    @GetMapping
+    public ResponseEntity<? extends ResponseDto> getUserById(@RequestParam Long id) {
         var userDto = userService.getUserById(id);
         return ResponseEntity.ok(userDto);
     }
 
-    //TODO create CRUD operations
+    @GetMapping("/test")
+    public ResponseEntity<? extends ResponseDto> test() {
+        var userDto = userService.getUserById(1L);
+        return ResponseEntity.ok(userDto);
+    }
 }
