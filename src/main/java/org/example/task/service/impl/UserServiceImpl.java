@@ -1,7 +1,8 @@
 package org.example.task.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.example.task.dto.UserDto;
+import org.example.task.dto.UserRequestDto;
+import org.example.task.dto.UserResponseDto;
 import org.example.task.model.User;
 import org.example.task.repository.UserRepository;
 import org.example.task.service.UserService;
@@ -21,30 +22,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto createUser(UserDto userDto) {
+    public UserResponseDto createUser(UserRequestDto dto) {
         var user = new User();
-        mapDtoToModel(userDto, user);
+        mapDtoToModel(dto, user);
         var savedUser = userRepository.save(user);
         return mapModelToDto(savedUser);
     }
 
     @Override
-    public UserDto getUserById(Long id) {
+    public UserResponseDto getUserById(Long id) {
         var user = userRepository.findById(id);
-        return user.map(this::mapModelToDto).orElseGet(UserDto::new);
+        return user.map(this::mapModelToDto).orElseGet(UserResponseDto::new);
     }
 
     @Override
-    public UserDto updateUser(UserDto userDto) {
-        var user = userRepository.findById(userDto.getId())
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id " + userDto.getId()));
+    public UserResponseDto updateUser(UserRequestDto dto) {
+        var user = userRepository.findById(dto.getId())
+                .orElseThrow(() -> new EntityNotFoundException());
 
-        if (!userDto.getUsername().isBlank()) {
-            user.setUsername(userDto.getUsername());
+        if (!dto.getUsername().isBlank()) {
+            user.setUsername(dto.getUsername());
             var userUpdated = userRepository.save(user);
             return mapModelToDto(userUpdated);
         } else {
-            throw new EntityNotFoundException("Username for update is empty for user with ID: " + userDto.getId());
+            throw new EntityNotFoundException("Username for update is empty for user with ID: " + dto.getId());
         }
     }
 
@@ -53,12 +54,17 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-    private UserDto mapModelToDto(User user) {
-        return new UserDto(user.getId(), user.getUsername());
+    private UserResponseDto mapModelToDto(User user) {
+        return new UserResponseDto(user.getId(), user.getUsername());
     }
 
-    private void mapDtoToModel(UserDto userDto, User user) {
-        user.setUsername(userDto.getUsername());
-        user.setId(userDto.getId());
+    private void mapDtoToModel(UserResponseDto dto, User user) {
+        user.setUsername(dto.getUsername());
+        user.setId(dto.getId());
+    }
+
+    private void mapDtoToModel(UserRequestDto dto, User user) {
+        user.setUsername(dto.getUsername());
+        user.setId(dto.getId());
     }
 }
