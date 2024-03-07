@@ -8,4 +8,5 @@ public interface UserService {
     UserResponseDto getUserById(Long id);
     UserResponseDto updateUser(UserRequestDto dto);
     void delete(Long id);
+    boolean isUserExist(String username);
 }
