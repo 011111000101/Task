@@ -1,6 +1,6 @@
-package org.example.task.controller;
+package org.example.task.restController;
 
-import org.example.task.dto.UserDto;
+import org.example.task.dto.ResponseDto;
 import org.example.task.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
+    public ResponseEntity<? extends ResponseDto> getUserById(@PathVariable Long id) {
         var userDto = userService.getUserById(id);
         return ResponseEntity.ok(userDto);
     }
