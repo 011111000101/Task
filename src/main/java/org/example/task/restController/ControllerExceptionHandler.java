@@ -1,6 +1,8 @@
 package org.example.task.restController;
 
 import org.example.task.dto.ErrorResponseDto;
+import org.example.task.exception.TableIsEmptyException;
+import org.example.task.exception.UserAlreadyExistsException;
 import org.example.task.exception.UserUpdateException;
 import org.example.task.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -13,15 +15,25 @@ public class ControllerExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
-    public ErrorResponseDto handleUserIdNotExistException(UserNotFoundException ex) {
-        var errorResponse = new ErrorResponseDto(ex.getMessage(),"Id is not exist.");
-        return errorResponse;
+    public ErrorResponseDto handleUserNotFoundException(UserNotFoundException ex) {
+        return new ErrorResponseDto(ex.getMessage(),"User with id is not exist.");
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(UserUpdateException.class)
     public ErrorResponseDto handleUserIdNotExistException(UserUpdateException ex) {
-        var errorResponse = new ErrorResponseDto(ex.getMessage(),"UserName is empty");
-        return errorResponse;
+        return new ErrorResponseDto(ex.getMessage(),"UserName is empty");
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ErrorResponseDto handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
+        return new ErrorResponseDto(ex.getMessage(),"User is already exist.");
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(TableIsEmptyException.class)
+    public ErrorResponseDto handleTableIsEmptyException(TableIsEmptyException ex) {
+        return new ErrorResponseDto(ex.getMessage(),"Table is empty.");
     }
 }

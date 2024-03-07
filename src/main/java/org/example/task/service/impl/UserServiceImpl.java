@@ -2,6 +2,7 @@ package org.example.task.service.impl;
 
 import org.example.task.dto.UserRequestDto;
 import org.example.task.dto.UserResponseDto;
+import org.example.task.exception.TableIsEmptyException;
 import org.example.task.exception.UserAlreadyExistsException;
 import org.example.task.exception.UserNotFoundException;
 import org.example.task.exception.UserUpdateException;
@@ -11,6 +12,8 @@ import org.example.task.service.UserService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Primary
 @Service
@@ -70,6 +73,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isUserExist(String username) {
         return userRepository.existsUserByUsername(username);
+    }
+
+    @Override
+    public List<UserResponseDto> getAllUsers() {
+        var listOfUsers = userRepository.findAll();
+        if (listOfUsers.isEmpty()) {
+            throw new TableIsEmptyException("User");
+        } else {
+            return listOfUsers.stream().map(this::mapModelToDto).toList();
+        }
     }
 
     private UserResponseDto mapModelToDto(User user) {
