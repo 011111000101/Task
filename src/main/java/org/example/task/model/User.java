@@ -1,8 +1,9 @@
 package org.example.task.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.example.task.validator.annotation.NameRestriction;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -17,7 +18,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty(message = "Username cannot be empty")
+    @NotBlank(message = "Username cannot be empty")
     private String username;
 
     public User(String username) {
