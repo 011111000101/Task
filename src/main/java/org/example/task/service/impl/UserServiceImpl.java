@@ -5,7 +5,6 @@ import org.example.task.dto.UserResponseDto;
 import org.example.task.exception.TableIsEmptyException;
 import org.example.task.exception.UserAlreadyExistsException;
 import org.example.task.exception.UserNotFoundException;
-import org.example.task.exception.UserUpdateException;
 import org.example.task.model.User;
 import org.example.task.repository.UserRepository;
 import org.example.task.service.UserService;
@@ -52,13 +51,9 @@ public class UserServiceImpl implements UserService {
                 .findById(dtoUpdate.getId())
                 .orElseThrow(() -> new UserNotFoundException(dtoUpdate.getId()));
 
-        if (!dtoUpdate.getUsername().isBlank()) {
             user.setUsername(dtoUpdate.getUsername());
             var userUpdated = userRepository.save(user);
             return mapModelToDto(userUpdated);
-        } else {
-            throw new UserUpdateException("User name is missing.");
-        }
     }
 
     @Override

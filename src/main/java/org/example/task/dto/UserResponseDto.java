@@ -1,6 +1,6 @@
 package org.example.task.dto;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserResponseDto extends ResponseDto{
     private Long id;
-    @NotEmpty(message = "Username cannot be empty")
+    @NotBlank(message = "Username cannot be empty")
     private String username;
 
     public UserResponseDto(String username) {

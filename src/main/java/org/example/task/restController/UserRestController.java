@@ -1,5 +1,6 @@
 package org.example.task.restController;
 
+import jakarta.validation.Valid;
 import org.example.task.dto.BasicResponseDto;
 import org.example.task.dto.ResponseDto;
 import org.example.task.dto.UserRequestDto;
@@ -12,12 +13,18 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
-public class UserController {
+public class UserRestController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public UserRestController(UserService userService) {
         this.userService = userService;
+    }
+
+    @PostMapping
+    public ResponseEntity<UserResponseDto> createUser(@Valid @RequestBody UserRequestDto updatedDto) {
+        var createdUser = userService.createUser(updatedDto);
+        return ResponseEntity.ok(createdUser);
     }
 
     @GetMapping
@@ -26,28 +33,21 @@ public class UserController {
         return ResponseEntity.ok(userDto);
     }
 
+    @PatchMapping()
+    public ResponseEntity<UserResponseDto> updateUser(@Valid @RequestBody UserRequestDto updatedDto) {
+        var updatedUser = userService.updateUser(updatedDto);
+        return ResponseEntity.ok(updatedUser);
+    }
+
     @DeleteMapping
     public ResponseEntity<? extends ResponseDto> deleteUser(@RequestParam Long id) {
         userService.delete(id);
         return ResponseEntity.ok(new BasicResponseDto("User deleted with ID: " + id));
     }
 
-    @PatchMapping()
-    public ResponseEntity<UserResponseDto> updateUser(@RequestBody UserRequestDto updatedDto) {
-        var updatedUser = userService.updateUser(updatedDto);
-        return ResponseEntity.ok(updatedUser);
-    }
-
-    @PostMapping
-    public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto updatedDto) {
-        var createdUser = userService.createUser(updatedDto);
-        return ResponseEntity.ok(createdUser);
-    }
-
     @GetMapping("/all")
-    public ResponseEntity<List<UserResponseDto>> createUser() {
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
         var listOfAllUsers = userService.getAllUsers();
         return ResponseEntity.ok(listOfAllUsers);
     }
-
 }
