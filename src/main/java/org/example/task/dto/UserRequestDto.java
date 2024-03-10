@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.example.task.validator.annotation.NameRestriction;
+import org.example.task.validator.NameRestriction;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
