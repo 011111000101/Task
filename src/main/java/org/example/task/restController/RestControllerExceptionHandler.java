@@ -19,7 +19,7 @@ public class RestControllerExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
     public ErrorResponseDto handleUserNotFoundException(UserNotFoundException ex) {
-        return new ErrorResponseDto(ex.getMessage(),"User with id is not exist.");
+        return new ErrorResponseDto(ex.getMessage(),"User with current id is not exist.");
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
