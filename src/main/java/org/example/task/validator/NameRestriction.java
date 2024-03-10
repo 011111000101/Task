@@ -1,8 +1,8 @@
-package org.example.task.validator.annotation;
+package org.example.task.validator;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import org.example.task.validator.annotation.impl.NameRestrictionValidator;
+import org.example.task.validator.impl.NameRestrictionValidator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -21,4 +21,3 @@ public @interface NameRestriction {
 
     Class<? extends Payload>[] payload() default {};
 }
-

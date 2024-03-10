@@ -1,8 +1,8 @@
-package org.example.task.validator.annotation.impl;
+package org.example.task.validator.impl;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.example.task.validator.annotation.NameRestriction;
+import org.example.task.validator.NameRestriction;
 
 public class NameRestrictionValidator implements ConstraintValidator<NameRestriction, String> {
 

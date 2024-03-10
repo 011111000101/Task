@@ -14,8 +14,4 @@ public class UserResponseDto extends ResponseDto{
     private Long id;
     @NotBlank(message = "Username cannot be empty")
     private String username;
-
-    public UserResponseDto(String username) {
-        this.username = username;
-    }
 }
