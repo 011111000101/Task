@@ -5,3 +5,7 @@ spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
 spring.jpa.hibernate.ddl-auto=create-drop
 spring.jpa.generate-ddl=true
 server.port=your port
+
+#admin credentials
+user.username=admin
+user.password=nimda

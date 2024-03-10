@@ -39,12 +39,6 @@ public class UserRestController {
         return ResponseEntity.ok(updatedUser);
     }
 
-    @DeleteMapping
-    public ResponseEntity<? extends ResponseDto> deleteUser(@RequestParam Long id) {
-        userService.delete(id);
-        return ResponseEntity.ok(new BasicResponseDto("User deleted with ID: " + id));
-    }
-
     @GetMapping("/all")
     public ResponseEntity<List<UserResponseDto>> getAllUsers() {
         var listOfAllUsers = userService.getAllUsers();
