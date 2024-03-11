@@ -1,6 +1,6 @@
 package org.example.task.configuration;
 
-import org.example.task.dto.UserRequestDto;
+import org.example.task.dto.NewUserRequestDto;
 import org.example.task.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -18,9 +18,9 @@ public class DataInitializationConfig implements CommandLineRunner {
     @Transactional
     @Override
     public void run(String... args) {
-        userService.createUser(new UserRequestDto("admin"));
-        userService.createUser(new UserRequestDto("Karel Vopršálek"));
-        userService.createUser(new UserRequestDto("Igor"));
-        userService.createUser(new UserRequestDto("Petr"));
+        userService.createUser(new NewUserRequestDto("Petr","heslo123"));
+        userService.createUser(new NewUserRequestDto("Karel Vopršálek","heslo123"));
+        userService.createUser(new NewUserRequestDto("Igor","heslo123"));
+        userService.createUser(new NewUserRequestDto("Irena","heslo123"));
     }
 }

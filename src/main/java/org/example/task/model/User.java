@@ -3,6 +3,7 @@ package org.example.task.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.example.task.validator.NameRestriction;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -18,7 +19,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank(message = "Username cannot be empty")
+    @NameRestriction("Root")
     private String username;
+    @NotBlank(message = "Password cannot be empty")
+    private String password;
+
 
     @Override
     public final boolean equals(Object o) {
@@ -28,7 +33,7 @@ public class User {
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
         User user = (User) o;
-        return getId() != null && Objects.equals(getId(), user.getId());
+        return getId() != null && getUsername() != null && Objects.equals(getId(), user.getId()) && Objects.equals(getUsername(), user.getUsername());
     }
 
     @Override
