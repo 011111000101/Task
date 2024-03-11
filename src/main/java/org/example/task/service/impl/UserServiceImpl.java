@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     private void isUserExist(String username) {
-        if (!userRepository.existsUserByUsername(username)){
+        if (userRepository.existsUserByUsername(username)){
             throw new UserAlreadyExistsException(username);
         };
     }
