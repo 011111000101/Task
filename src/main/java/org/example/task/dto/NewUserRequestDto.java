@@ -1,22 +1,22 @@
 package org.example.task.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.example.task.validator.NameRestriction;
-import org.example.task.validator.NullOrSize;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRequestDto extends RequestDto{
-    @NotNull
-    private Long id;
+public class NewUserRequestDto extends RequestDto{
+    @NotBlank(message = "Username cannot be empty")
     @NameRestriction("Root")
     private String username;
-    @NullOrSize(min = 3, max = 12)
+    @NotBlank(message = "Password cannot be empty")
+    @Size(min = 3,max = 12)
     private String password;
 }

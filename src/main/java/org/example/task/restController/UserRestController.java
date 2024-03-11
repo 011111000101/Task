@@ -1,10 +1,7 @@
 package org.example.task.restController;
 
 import jakarta.validation.Valid;
-import org.example.task.dto.BasicResponseDto;
-import org.example.task.dto.ResponseDto;
-import org.example.task.dto.UserRequestDto;
-import org.example.task.dto.UserResponseDto;
+import org.example.task.dto.*;
 import org.example.task.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +19,7 @@ public class UserRestController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponseDto> createUser(@Valid @RequestBody UserRequestDto updatedDto) {
+    public ResponseEntity<UserResponseDto> createUser(@Valid @RequestBody NewUserRequestDto updatedDto) {
         var createdUser = userService.createUser(updatedDto);
         return ResponseEntity.ok(createdUser);
     }
@@ -34,9 +31,9 @@ public class UserRestController {
     }
 
     @PatchMapping()
-    public ResponseEntity<UserResponseDto> updateUser(@Valid @RequestBody UserRequestDto updatedDto) {
-        var updatedUser = userService.updateUser(updatedDto);
-        return ResponseEntity.ok(updatedUser);
+    public ResponseEntity<? extends ResponseDto> updateUser(@Valid @RequestBody UserRequestDto updatedDto) {
+        userService.updateUser(updatedDto);
+        return ResponseEntity.ok(new BasicResponseDto("User changed."));
     }
 
     @GetMapping("/all")
