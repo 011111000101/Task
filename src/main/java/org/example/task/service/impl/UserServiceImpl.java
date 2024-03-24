@@ -1,7 +1,6 @@
 package org.example.task.service.impl;
 
 import org.example.task.dto.NewUserRequestDto;
-import org.example.task.dto.RequestDto;
 import org.example.task.dto.UserRequestDto;
 import org.example.task.dto.UserResponseDto;
 import org.example.task.exception.UserAlreadyExistsException;
@@ -107,9 +106,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     private User mapDtoToModel(NewUserRequestDto dto) {
-        var user = new User();
-        user.setUsername(dto.getUsername());
-        user.setPassword(dto.getPassword());
-        return user;
+        return new User(dto.getUsername(), dto.getPassword());
     }
 }
